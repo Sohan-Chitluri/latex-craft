@@ -42,8 +42,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             },
             render_previews: {
               type: 'boolean',
-              description: 'Whether to render page PNG previews (default: true).',
-              default: true,
+              description: 'Whether to render page PNG previews (default: false for fast edits; set to true when automated visual QA is requested).',
+              default: false,
             },
             dpi: {
               type: 'number',
@@ -203,8 +203,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
   try {
     if (name === 'compile_latex') {
+      const shouldRender = Boolean(args.render_previews);
       const res = compileLatex(args.tex_path, {
-        render: args.render_previews !== false,
+        render: shouldRender,
         dpi: args.dpi || 150,
         outdir: args.outdir,
       });
