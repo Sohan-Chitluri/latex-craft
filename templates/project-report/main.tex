@@ -1,0 +1,88 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{setspace}
+\onehalfspacing
+
+\begin{document}
+
+% -------------------------------------------------------------
+% Formal Cover Page
+% -------------------------------------------------------------
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+    {\Huge\bfseries Autonomous Edge Robotic Platform\par}
+    \vspace{1cm}
+    {\Large Capstone Engineering Project Final Report\par}
+    \vspace{2cm}
+    {\large\textbf{Author Names:}\par}
+    {\large Alice Smith, Bob Johnson, Charlie Brown\par}
+    \vspace{1cm}
+    {\large\textbf{Faculty Advisor:}\par}
+    {\large Dr. Jane Doe\par}
+    \vfill
+    {\large Department of Mechanical and Electrical Engineering\par}
+    {\large University Institute of Technology\par}
+    \vspace{0.8cm}
+    {\large\today\par}
+\end{titlepage}
+
+% -------------------------------------------------------------
+% Executive Summary
+% -------------------------------------------------------------
+\chapter*{Executive Summary}
+\addcontentsline{toc}{chapter}{Executive Summary}
+This project details the end-to-end design, implementation, and empirical testing of an autonomous mobile robotic platform. The system integrates real-time LiDAR SLAM, deep learning vision models for obstacle avoidance, and decentralized motor control on edge hardware. Experimental trials confirmed autonomous waypoint navigation with centimeter-level precision.
+
+\tableofcontents
+
+% -------------------------------------------------------------
+% Chapters
+% -------------------------------------------------------------
+\chapter{Introduction and Objectives}
+\section{Problem Statement}
+Unstructured indoor environments present significant localization challenges for low-cost mobile robots.
+
+\section{Project Deliverables}
+\begin{itemize}
+    \item Custom PCB motor driver board with CAN-bus telemetry.
+    \item Real-time embedded SLAM module operating at 30Hz.
+    \item Comprehensive safety subsystem with redundant emergency braking.
+\end{itemize}
+
+\chapter{System Design and Architecture}
+\section{Hardware Subsystem}
+The vehicle chassis utilizes differential four-wheel drive with brushless DC motors and optical quadrature encoders.
+
+\section{Software Pipeline}
+Sensor fusion merges 2D LiDAR scans with IMU dead reckoning through an Extended Kalman Filter (EKF).
+
+\chapter{Milestones and Deliverables}
+\begin{table}[htbp]
+\centering
+\caption{Project Milestones and Completion Status}
+\label{tab:milestones}
+\begin{tabular}{llcc}
+\toprule
+\textbf{Milestone} & \textbf{Target Date} & \textbf{Completion} & \textbf{Status} \\
+\midrule
+M1: Mechanical Assembly & Oct 15 & 100\% & Completed \\
+M2: Motor Controller Firmware & Nov 01 & 100\% & Completed \\
+M3: SLAM Integration & Nov 20 & 100\% & Completed \\
+M4: Full Autonomous Navigation & Dec 05 & 100\% & Completed \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\chapter{Results and Future Work}
+\section{Empirical Evaluation}
+Waypoint navigation testing in a 500-square-meter facility demonstrated an average path tracking error of less than $\qty{3.2}{\centi\meter}$.
+
+\section{Conclusion}
+The platform met all performance, budget, and safety criteria established in the initial project specifications.
+
+\end{document}

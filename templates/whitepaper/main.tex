@@ -1,0 +1,96 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+
+\definecolor{primary}{RGB}{24, 76, 120}
+\definecolor{accent}{RGB}{220, 53, 69}
+\definecolor{lightgray}{RGB}{245, 247, 250}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=primary,
+    urlcolor=primary,
+    citecolor=primary
+}
+
+\newtcolorbox{callout}[1][]{
+    colback=lightgray,
+    colframe=primary,
+    fonttitle=\bfseries,
+    title=#1,
+    arc=3mm,
+    boxrule=1pt,
+    left=8pt,
+    right=8pt,
+    top=8pt,
+    bottom=8pt
+}
+
+\title{\LARGE\textbf{\textcolor{primary}{System Architecture Whitepaper:}}\\[0.3em] \Large Next-Generation Distributed Event Processing Engine}
+\author{
+  \textbf{Architecture Engineering Team} \\
+  \texttt{architecture@company.org}
+}
+\date{Document Version: 1.2 \quad $|$ \quad \today}
+
+\begin{document}
+\maketitle
+
+\begin{callout}[Executive Summary]
+This whitepaper specifies the architectural blueprint for the next-generation distributed event streaming pipeline. Designed to sustain 500,000 events/second at p99 latency below 15ms, the architecture decouples ingestion, stateful aggregation, and analytical sinks using partitioned log topologies and consensus-backed leader coordination.
+\end{callout}
+
+\section{System Context and Problem Statement}
+Legacy message brokers encounter thread exhaustion and tail latency spikes when batch ingestion rates exceed hardware memory bandwidth. This system addresses:
+\begin{itemize}
+    \item \textbf{Head-of-Line Blocking}: Resolved via independent per-key virtual partitions.
+    \item \textbf{Network Amplification}: Eliminated through zero-copy ring buffers.
+\end{itemize}
+
+\section{Architectural Topology}
+The overall platform decomposes into three primary tiers:
+
+\begin{enumerate}
+    \item \textbf{Edge Ingestion Gateways}: Stateless HTTP/gRPC ingress workers performing token validation and protocol deserialization.
+    \item \textbf{Distributed Commit Log}: High-throughput write-ahead logging (WAL) replicated across 3-node Raft consensus quorums.
+    \item \textbf{Stream Processors}: Event-driven state machines executing stream transformations.
+\end{enumerate}
+
+\section{Component Specifications and Interfaces}
+
+\begin{table}[htbp]
+\centering
+\caption{Core System Microservices and Specifications}
+\label{tab:components}
+\begin{tabular}{llll}
+\toprule
+\textbf{Subsystem} & \textbf{Runtime} & \textbf{Protocol} & \textbf{Persistence} \\
+\midrule
+Ingress Gateway & Go 1.22 & gRPC / HTTP3 & Stateless \\
+Partition Coordinator & Rust & Internal RPC & Raft / RocksDB \\
+Event Dispatcher & Node.js & WebSocket & Ephemeral \\
+Analytics Bridge & C++20 & Apache Arrow & Parquet / S3 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Non-Functional Requirements and SLA}
+\begin{itemize}
+    \item \textbf{Throughput}: Sustained minimum of $500{,}000$ messages/sec.
+    \item \textbf{End-to-End Latency}: $p_{50} < \qty{4}{\milli\second}$, $p_{99} < \qty{15}{\milli\second}$.
+    \item \textbf{Fault Tolerance}: Zero data loss with maximum RPO $= 0$ and RTO $< \qty{2}{\second}$ upon node failure.
+\end{itemize}
+
+\section{Security and Threat Model}
+All inter-node traffic mandates mutual TLS (mTLS) with automated certificate rotation. Data at rest is encrypted via AES-256-GCM.
+
+\section{Deployment Roadmap}
+Rollout will proceed across three canary milestones: synthetic load testing, shadow production traffic mirroring, and final failover cutover.
+
+\end{document}

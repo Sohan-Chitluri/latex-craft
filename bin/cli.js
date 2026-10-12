@@ -9,7 +9,7 @@ const { renderPdfPages, getPdfInfo } = require('../src/renderer.js');
 const { resolveCitation } = require('../src/bibtex.js');
 const { convertWordToLatex } = require('../src/converter.js');
 const { convertPdfToLatexWorkspace } = require('../src/pdf2latex.js');
-const { scaffoldTemplate, listTemplates } = require('../src/templates.js');
+const { scaffoldTemplate, listTemplates, saveCustomTemplate } = require('../src/templates.js');
 const { runDoctor } = require('../src/doctor.js');
 const { diffPdfs } = require('../src/diff.js');
 const { startMcpServer } = require('../src/mcp.js');
@@ -44,8 +44,14 @@ Commands:
     --outdir <dir>               Target extraction directory (default: <basename>_extracted)
     --dpi <number>               Resolution DPI for page images (default: 150)
 
-  init <template>                Scaffold an official template (${listTemplates().join(', ')})
+  init <template>                Scaffold an official or custom template
     --outdir <dir>               Target directory (default: ./)
+
+  list-templates                 List all built-in and saved custom templates
+
+  save-template <name>           Save current project or document as a reusable custom template
+    --path <dir_or_file>         Directory or file to save (default: ./)
+    --desc <text>                Optional description of the template
 
   info <file.pdf>                Inspect page count, dimensions, and metadata of a PDF
 
@@ -206,6 +212,38 @@ async function main() {
       const res = scaffoldTemplate(type, outdir);
       console.log(`✓ Scaffolded '${res.template}' template into: ${res.directory}`);
       res.filesCreated.forEach(f => console.log(`  - ${f}`));
+      break;
+    }
+
+    case 'list-templates': {
+      const { builtin, custom } = listTemplates();
+      console.log(`\n📚 Available LaTeX Templates:\n`);
+      console.log(`  Built-in Templates (${builtin.length}):`);
+      builtin.forEach(t => console.log(`    • ${t}`));
+      console.log(`\n  User Saved Templates (${custom.length}):`);
+      if (custom.length === 0) {
+        console.log(`    (None saved yet. Run 'latex-craft save-template <name>' to save your own!)`);
+      } else {
+        custom.forEach(t => console.log(`    • ${t}`));
+      }
+      console.log('');
+      break;
+    }
+
+    case 'save-template': {
+      const name = subArgs[0];
+      if (!name) {
+        console.error('Error: Provide a template name: latex-craft save-template <name>');
+        process.exit(1);
+      }
+      const source = getOpt('--path', process.cwd());
+      const desc = getOpt('--desc', '');
+      const res = saveCustomTemplate(name, source, desc);
+      console.log(`✓ Custom template '${res.name}' saved successfully!`);
+      console.log(`  Saved to: ${res.directory}`);
+      console.log(`  Files:    ${res.savedFiles.join(', ')}`);
+      console.log(`\nYou can now scaffold this template anytime with:`);
+      console.log(`  latex-craft init ${res.name} --outdir ./my-new-project\n`);
       break;
     }
 

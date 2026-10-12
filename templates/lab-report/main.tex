@@ -1,0 +1,96 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{siunitx}
+\sisetup{separate-uncertainty = true}
+
+\title{\textbf{Laboratory Experiment Report:}\\[0.5em] \large Characterization of Nonlinear Dynamic Systems}
+\author{
+  \textbf{Student Name} \quad (ID: 12345678) \\
+  \textit{Department of Electrical and Computer Engineering} \\
+  \textit{Lab Partner: Partner Name} \\
+  \texttt{student@university.edu}
+}
+\date{Date of Experiment: \today \quad $|$ \quad Course: ECE-301}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This laboratory experiment investigates the transient response and frequency behavior of a second-order RLC resonator. Experimental damping ratios and natural frequencies were measured across 10 trials. The empirical resonant frequency was determined to be $\qty{15.42 \pm 0.18}{\kilo\hertz}$, matching theoretical calculations within a relative error margin of $1.8\%$.
+\end{abstract}
+
+\section{Objectives}
+\begin{itemize}
+    \item Measure the step response and transient overshoot of a second-order analog filter.
+    \item Calculate empirical damping ratios ($\zeta$) and natural frequencies ($\omega_n$).
+    \item Quantify measurement uncertainties and verify theoretical models.
+\end{itemize}
+
+\section{Theoretical Background}
+The governing differential equation for the series resonator is:
+\begin{equation}
+L \frac{d^2 i(t)}{dt^2} + R \frac{di(t)}{dt} + \frac{1}{C} i(t) = 0
+\end{equation}
+The characteristic natural frequency $\omega_0$ and quality factor $Q$ are defined as:
+\begin{equation}
+\omega_0 = \frac{1}{\sqrt{LC}}, \qquad Q = \frac{1}{R}\sqrt{\frac{L}{C}}
+\end{equation}
+
+\section{Apparatus and Experimental Setup}
+\begin{itemize}
+    \item Digital Storage Oscilloscope (Rigol DS1054Z, $\pm 2\%$ vertical accuracy)
+    \item Arbitrary Function Generator (Keysight 33500B)
+    \item Precision Decade Inductor Box ($\qty{10.0}{\milli\henry} \pm 1\%$)
+    \item Precision Capacitor ($\qty{10.0}{\nano\farad} \pm 1\%$)
+    \item Metal Film Resistors ($R_1 = \qty{100.0}{\ohm}$, $R_2 = \qty{470.0}{\ohm}$)
+\end{itemize}
+
+\section{Experimental Observations and Data}
+Measurements were recorded under a $\qty{5.0}{\volt}$ peak-to-peak square wave excitation:
+
+\begin{table}[htbp]
+\centering
+\caption{Experimental Transient Response Observations}
+\label{tab:measurements}
+\begin{tabular}{cccccc}
+\toprule
+\textbf{Trial} & \textbf{Resistance ($\Omega$)} & \textbf{Peak Voltage (\unit{\volt})} & \textbf{Overshoot (\%)} & \textbf{Period (\unit{\micro\second})} \\
+\midrule
+1 & $100.2$ & $7.45 \pm 0.05$ & $49.0$ & $64.8 \pm 0.4$ \\
+2 & $100.2$ & $7.48 \pm 0.05$ & $49.6$ & $64.7 \pm 0.4$ \\
+3 & $100.2$ & $7.42 \pm 0.05$ & $48.4$ & $65.0 \pm 0.4$ \\
+4 & $470.5$ & $5.62 \pm 0.05$ & $12.4$ & $68.2 \pm 0.4$ \\
+5 & $470.5$ & $5.60 \pm 0.05$ & $12.0$ & $68.4 \pm 0.4$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Uncertainty and Error Propagation}
+Given period $T = \qty{64.8 \pm 0.4}{\micro\second}$, the empirical frequency $f$ is:
+\begin{equation}
+f = \frac{1}{T} = \qty{15.43}{\kilo\hertz}
+\end{equation}
+Propagating the measurement uncertainty using partial derivatives:
+\begin{equation}
+\delta f = \left| \frac{\partial f}{\partial T} \right| \delta T = \frac{\delta T}{T^2} = \frac{\qty{0.4}{\micro\second}}{(\qty{64.8}{\micro\second})^2} = \qty{0.095}{\kilo\hertz}
+\end{equation}
+Accounting for component tolerances ($\delta L/L = 1\%$, $\delta C/C = 1\%$), the theoretical resonance is:
+\begin{equation}
+f_{theory} = \frac{1}{2\pi \sqrt{LC}} = \qty{15.92 \pm 0.16}{\kilo\hertz}
+\end{equation}
+
+\section{Discussion and Sources of Error}
+The observed percentage discrepancy of $3.1\%$ is fully encompassed within the cumulative $2\sigma$ error bounds. Systematic errors arose primarily from:
+\begin{enumerate}
+    \item Oscilloscope probe capacitive loading ($\approx \qty{15}{\pico\farad}$).
+    \item Internal ESR of the inductor winding ($\approx \qty{3.2}{\ohm}$).
+\end{enumerate}
+
+\section{Conclusion}
+The theoretical model for second-order RLC transients was validated experimentally. Damping and frequency measurements were consistent across multiple trials within quantified instrument uncertainty.
+
+\end{document}

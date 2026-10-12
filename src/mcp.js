@@ -10,7 +10,7 @@ const { renderPdfPages, getPdfInfo } = require('./renderer.js');
 const { resolveCitation } = require('./bibtex.js');
 const { convertWordToLatex } = require('./converter.js');
 const { convertPdfToLatexWorkspace } = require('./pdf2latex.js');
-const { scaffoldTemplate } = require('./templates.js');
+const { scaffoldTemplate, listTemplates, saveCustomTemplate } = require('./templates.js');
 const { runDoctor } = require('./doctor.js');
 const { diffPdfs } = require('./diff.js');
 
@@ -129,14 +129,13 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: 'scaffold_template',
-        description: 'Scaffolds an official academic or technical paper template (ieee, springer, patent, resume, article).',
+        description: 'Scaffolds an official or user-saved custom paper template (e.g. ieee, springer, patent, lab-report, whitepaper, project-report, tech-memo, resume, article, or any custom template).',
         inputSchema: {
           type: 'object',
           properties: {
             template_type: {
               type: 'string',
-              enum: ['ieee', 'springer', 'patent', 'resume', 'article'],
-              description: 'Template type to create.',
+              description: 'Template name to create (run list_templates to see all built-in and user templates).',
             },
             target_dir: {
               type: 'string',
@@ -144,6 +143,24 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             },
           },
           required: ['template_type', 'target_dir'],
+        },
+      },
+      {
+        name: 'list_templates',
+        description: 'Lists all available built-in publication templates and user-saved custom templates.',
+        inputSchema: { type: 'object', properties: {} },
+      },
+      {
+        name: 'save_custom_template',
+        description: 'Saves the current document or directory as a reusable custom template in the user library.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            name: { type: 'string', description: 'Unique alphanumeric identifier for the template.' },
+            source_path: { type: 'string', description: 'Directory or .tex file to save as a template (default: current directory).' },
+            description: { type: 'string', description: 'Optional description of the template.' },
+          },
+          required: ['name'],
         },
       },
       {
@@ -276,6 +293,30 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             type: 'text',
             text: `✓ Scaffolded '${res.template}' template into: ${res.directory}\n` +
               res.filesCreated.map(f => `  - ${f}`).join('\n'),
+          },
+        ],
+      };
+    }
+
+    if (name === 'list_templates') {
+      const list = listTemplates();
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(list, null, 2),
+          },
+        ],
+      };
+    }
+
+    if (name === 'save_custom_template') {
+      const res = saveCustomTemplate(args.name, args.source_path, args.description);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `✓ Saved custom template '${res.name}'!\nDirectory: ${res.directory}\nFiles: ${res.savedFiles.join(', ')}`,
           },
         ],
       };

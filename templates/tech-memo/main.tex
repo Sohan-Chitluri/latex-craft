@@ -1,0 +1,78 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+
+\definecolor{headerblue}{RGB}{20, 50, 90}
+\definecolor{lightgray}{RGB}{246, 248, 250}
+
+\pagestyle{empty}
+
+\begin{document}
+
+% -------------------------------------------------------------
+% Memo Header
+% -------------------------------------------------------------
+{\noindent\LARGE\bfseries\textcolor{headerblue}{TECHNICAL MEMORANDUM}}\\[0.8em]
+\hrule height 1.5pt
+\vspace{1em}
+
+\noindent
+\begin{tabular}{ll}
+\textbf{TO:} & Engineering Leadership \& Project Steering Committee \\
+\textbf{FROM:} & Systems Architecture \& Infrastructure Team \\
+\textbf{DATE:} & \today \\
+\textbf{SUBJECT:} & Strategic Evaluation of Vector Database Infrastructure for AI Inference \\
+\end{tabular}
+
+\vspace{1em}
+\hrule height 0.5pt
+\vspace{1.5em}
+
+% -------------------------------------------------------------
+% Executive Summary Box
+% -------------------------------------------------------------
+\begin{tcolorbox}[colback=lightgray, colframe=headerblue, arc=2mm, title=\textbf{Executive Recommendation}, fonttitle=\bfseries]
+We recommend transitioning from legacy in-memory indexing to a dedicated distributed vector database. Benchmarks show a \textbf{4.2x reduction in query latency} at scale and a \textbf{38\% compute infrastructure cost savings}, satisfying our Q4 latency SLA of sub-20ms under peak load.
+\end{tcolorbox}
+
+\section*{Problem Statement}
+Current semantic search workloads exhibit severe garbage collection pauses and memory bloat under concurrency exceeding 10,000 queries per second. Horizontal scaling with our existing architecture requires duplicating the entire index across all worker nodes, causing unsustainable memory expenses.
+
+\section*{Evaluated Alternatives and Trade-off Matrix}
+We conducted an empirical 14-day evaluation across three candidate architectures:
+\begin{enumerate}
+    \item \textbf{Option A}: In-memory HNSW on general compute instances (Status Quo).
+    \item \textbf{Option B}: Managed Cloud Vector Service (Vendor A).
+    \item \textbf{Option C}: Self-hosted Distributed Vector Engine on Kubernetes (Recommended).
+\end{enumerate}
+
+\begin{table}[htbp]
+\centering
+\caption{Architectural Trade-Off Comparison Matrix}
+\label{tab:tradeoff}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Criterion} & \textbf{Option A (Status Quo)} & \textbf{Option B (Managed)} & \textbf{Option C (Self-Hosted)} \\
+\midrule
+p99 Query Latency & $62\text{ ms}$ & $24\text{ ms}$ & $\mathbf{14\text{ ms}}$ \\
+Estimated Monthly Cost & $\$18{,}400$ & $\$14{,}200$ & $\mathbf{\$8{,}900}$ \\
+Operational Complexity & Low & Very Low & Moderate \\
+Data Sovereignty / Compliance & High & Medium & $\mathbf{High}$ \\
+Throughput Limit (QPS) & $8{,}500$ & $35{,}000$ & $\mathbf{50{,}000+}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{Implementation Plan and Next Steps}
+\begin{itemize}
+    \item \textbf{Phase 1 (Weeks 1--2)}: Deploy prototype cluster in staging; run 24-hour chaos testing.
+    \item \textbf{Phase 2 (Weeks 3--4)}: Enable shadow traffic mirroring with 10\% of production volume.
+    \item \textbf{Phase 3 (Week 5)}: Final canary migration and decommissioning of legacy worker pools.
+\end{itemize}
+
+\end{document}
