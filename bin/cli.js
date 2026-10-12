@@ -9,6 +9,7 @@ const { renderPdfPages, getPdfInfo } = require('../src/renderer.js');
 const { resolveCitation } = require('../src/bibtex.js');
 const { convertWordToLatex } = require('../src/converter.js');
 const { convertPdfToLatexWorkspace } = require('../src/pdf2latex.js');
+const { adaptReferenceDocument } = require('../src/adapt.js');
 const { scaffoldTemplate, listTemplates, saveCustomTemplate } = require('../src/templates.js');
 const { runDoctor } = require('../src/doctor.js');
 const { diffPdfs } = require('../src/diff.js');
@@ -35,6 +36,10 @@ Commands:
     --bib <file.bib>             Append citation to specified .bib file
 
   diff <old.pdf> <new.pdf>       Visually compare two PDF compilations for layout shifts
+
+  adapt <reference-doc>          Scaffold a new report from an existing reference doc (PDF, docx, md, tex)
+    --template <name>            Target template (e.g. ieee, lab-report, whitepaper, etc.)
+    --outdir <dir>               Target project directory (default: ./new_report)
 
   convert <file.docx>            Convert Word document (.docx) to LaTeX and extract figures
     --output <file.tex>          Target LaTeX output path
@@ -167,6 +172,25 @@ async function main() {
       console.log(`\nDiff Summary:`);
       console.log(`  Pages: ${res.oldPageCount} -> ${res.newPageCount} (Delta: ${res.pageCountDelta >= 0 ? '+' : ''}${res.pageCountDelta})`);
       res.changes.forEach(c => console.log(`  - Page ${c.page}: ${c.status.toUpperCase()}${c.sizeDiffBytes ? ` (~${c.sizeDiffBytes}B shift)` : ''}`));
+      break;
+    }
+
+    case 'adapt': {
+      const refFile = subArgs[0];
+      if (!refFile) {
+        console.error('Error: Provide a reference file: latex-craft adapt <file> --template <type>');
+        process.exit(1);
+      }
+      const template = getOpt('--template', 'article');
+      const outdir = getOpt('--outdir');
+      console.log(`Adapting reference file '${refFile}' into template '${template}'...`);
+      const res = adaptReferenceDocument(refFile, { template, outdir });
+      console.log(`\n✓ Scaffolded new report project!`);
+      console.log(`  Directory:      ${res.directory}`);
+      console.log(`  Target Format:  ${res.template}`);
+      console.log(`  Extraction:     ${res.summary}`);
+      console.log(`  Project Files:  ${res.scaffoldFiles.join(', ')}`);
+      console.log(`\nNext: Check ./reference_data/ and edit ${res.directory}/main.tex.`);
       break;
     }
 

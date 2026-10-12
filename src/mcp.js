@@ -10,6 +10,7 @@ const { renderPdfPages, getPdfInfo } = require('./renderer.js');
 const { resolveCitation } = require('./bibtex.js');
 const { convertWordToLatex } = require('./converter.js');
 const { convertPdfToLatexWorkspace } = require('./pdf2latex.js');
+const { adaptReferenceDocument } = require('./adapt.js');
 const { scaffoldTemplate, listTemplates, saveCustomTemplate } = require('./templates.js');
 const { runDoctor } = require('./doctor.js');
 const { diffPdfs } = require('./diff.js');
@@ -125,6 +126,19 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             dpi: { type: 'number', description: 'Resolution DPI for page images (default: 150).' },
           },
           required: ['pdf_path'],
+        },
+      },
+      {
+        name: 'adapt_from_reference',
+        description: 'Ingests an existing reference document (PDF, Word docx, Markdown, or old LaTeX), extracts its content and figures into ./reference_data/, and scaffolds a new project in the target template format.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            reference_path: { type: 'string', description: 'Path to the existing reference document (.pdf, .docx, .md, .tex).' },
+            template_type: { type: 'string', description: 'Target template format (e.g. ieee, lab-report, whitepaper, project-report, tech-memo, etc.).' },
+            outdir: { type: 'string', description: 'Destination directory for the new report.' },
+          },
+          required: ['reference_path'],
         },
       },
       {
@@ -280,6 +294,21 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           {
             type: 'text',
             text: `✓ Extracted PDF to LaTeX Workspace!\nDirectory:   ${res.directory}\nLaTeX Draft: ${res.texPath}\nRaw Text:    ${res.txtPath}\nPage Images: ${res.pageImages.length} image(s) in ${res.directory}/pages`,
+          },
+        ],
+      };
+    }
+
+    if (name === 'adapt_from_reference') {
+      const res = adaptReferenceDocument(args.reference_path, {
+        template: args.template_type,
+        outdir: args.outdir,
+      });
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `✓ Scaffolded new report project from reference!\nDirectory:     ${res.directory}\nTarget Format: ${res.template}\nExtraction:    ${res.summary}\nFiles Created: ${res.scaffoldFiles.join(', ')}`,
           },
         ],
       };
