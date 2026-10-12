@@ -1,0 +1,41 @@
+{
+  "name": "latex-craft",
+  "version": "1.0.0",
+  "description": "Lightweight LaTeX document compiler, visual QA reviewer, and Model Context Protocol (MCP) server for AI agents.",
+  "main": "src/index.js",
+  "bin": {
+    "latex-craft": "./bin/cli.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "templates",
+    "REQUIREMENTS.md",
+    "README.md"
+  ],
+  "scripts": {
+    "doctor": "node bin/cli.js doctor",
+    "start": "node bin/cli.js mcp",
+    "test": "node bin/cli.js doctor"
+  },
+  "keywords": [
+    "latex",
+    "tectonic",
+    "mcp",
+    "modelcontextprotocol",
+    "ai",
+    "typesetting",
+    "ieee",
+    "springer",
+    "poppler",
+    "pandoc"
+  ],
+  "author": "Antigravity & PeskyBird",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.6.0"
+  }
+}

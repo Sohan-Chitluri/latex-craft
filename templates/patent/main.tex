@@ -1,0 +1,65 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\doublespacing
+\usepackage{lineno}
+\linenumbers
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+
+% Patent paragraph numbering helper [0001], [0002], etc.
+\newcounter{patentpara}
+\newcommand{\ppara}{\stepcounter{patentpara}\noindent\textbf{[\padzero{\thepatentpara}]}\ }
+\newcommand{\padzero}[1]{\ifnum#1<10 000#1\else\ifnum#1<100 00#1\else\ifnum#1<1000 0#1\else#1\fi\fi\fi}
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries PATENT APPLICATION SPECIFICATION}\\[1em]
+{\large\bfseries SYSTEM AND METHOD FOR HIGH-SPEED DOCUMENT VERIFICATION}
+\end{center}
+
+\vspace{2em}
+
+\section*{TECHNICAL FIELD}
+\ppara The present disclosure relates generally to computational typesetting and automated document verification, and more specifically to closed-loop multimodal inspection of compiled documents.
+
+\section*{BACKGROUND OF THE INVENTION}
+\ppara In traditional typesetting workflows, compiling complex markup languages often produces layout anomalies such as orphaned headings, overlapping graphical elements, and citation syntax failures. Existing validation mechanisms rely predominantly on text-based error streams without visual feedback, failing to catch visual regressions prior to human inspection.
+
+\section*{BRIEF SUMMARY OF THE INVENTION}
+\ppara An object of the present disclosure is to provide a closed-loop system that automates the generation, rasterization, and visual assessment of compiled document layouts.
+
+\ppara In one embodiment, a method comprises receiving document source instructions, compiling said source instructions into a vector document format, rasterizing said vector document into a plurality of raster images corresponding to individual pages, and evaluating said images using a multimodal model.
+
+\section*{BRIEF DESCRIPTION OF THE DRAWINGS}
+\ppara \textbf{FIG. 1} is a schematic block diagram illustrating the overall system architecture.
+
+\ppara \textbf{FIG. 2} is a flowchart depicting the iterative compilation and multimodal validation loop.
+
+\section*{DETAILED DESCRIPTION OF PREFERRED EMBODIMENTS}
+\ppara Reference will now be made in detail to the exemplary embodiments of the present invention. While the invention is described in conjunction with these embodiments, it will be understood that they are not intended to limit the invention.
+
+\ppara Referring to FIG. 1, the document compilation subsystem executes an automated single-pass compilation engine.
+
+\section*{CLAIMS}
+\noindent What is claimed is:
+
+\begin{enumerate}
+\item A method for automated document verification, comprising:
+\begin{itemize}
+\item receiving, at a processor, a source document file comprising structured typesetting markup;
+\item compiling said source document into a portable vector representation;
+\item rasterizing each page of said vector representation into a high-resolution bitmap image; and
+\item inspecting, by a multimodal artificial intelligence engine, said bitmap image to verify that typographical constraints are satisfied.
+\end{itemize}
+
+\item The method of claim 1, further comprising:
+upon detecting an anomaly in said bitmap image, automatically adjusting parameters in said source document and re-compiling.
+\end{enumerate}
+
+\newpage
+\section*{ABSTRACT}
+A closed-loop system and method for automated document verification. A document source is compiled into a vector representation, rasterized into discrete page images, and visually evaluated using a multimodal model to enforce typographical and page budget constraints.
+
+\end{document}

@@ -1,0 +1,61 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[margin=0.6in]{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{titlesec}
+
+\hypersetup{colorlinks=true, urlcolor=blue}
+
+% Clean section styling with horizontal divider
+\titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
+\titlespacing*{\section}{0pt}{8pt}{4pt}
+\setlist[itemize]{noitemsep, topsep=1pt, leftmargin=1.2em}
+\pagestyle{empty}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\textbf{Alex Doe}}\\[3pt]
+\small City, State \ $|$ \ (555) 123-4567 \ $|$ \ \href{mailto:alex@example.com}{alex@example.com} \ $|$ \ \href{https://linkedin.com}{linkedin.com/in/alexdoe} \ $|$ \ \href{https://github.com}{github.com/alexdoe}
+\end{center}
+
+\vspace{-6pt}
+
+\section*{Education}
+\textbf{University Name}, City, State \hfill Grad Month 202X\\
+\textit{B.S. in Computer Science}, Minor in Mathematics \hfill GPA: 3.8/4.0
+
+\section*{Technical Skills}
+\textbf{Languages}: Python, TypeScript, Rust, C++, SQL, Go\\
+\textbf{Frameworks \& Tools}: Node.js, PyTorch, Docker, Kubernetes, Linux, Git, LaTeX\\
+\textbf{Domains}: Distributed Systems, Machine Learning Infrastructure, Compiler Engineering
+
+\section*{Professional Experience}
+\textbf{Software Engineering Intern} \hfill June 202X -- Aug 202X\\
+\textit{Company Name}, City, State
+\begin{itemize}
+\item Designed and deployed high-throughput ingestion pipeline processing 50M+ events daily with sub-10ms latency.
+\item Reduced server compute costs by 22\% by profiling memory bottlenecks and optimizing worker pools.
+\item Collaborated with a cross-functional team of 6 engineers using Agile methodologies.
+\end{itemize}
+
+\textbf{Undergraduate Research Assistant} \hfill Jan 202X -- May 202X\\
+\textit{Lab Name, University Name}, City, State
+\begin{itemize}
+\item Implemented novel attention mechanism in PyTorch, improving accuracy by 4.2\% on standard benchmarks.
+\item Co-authored research paper submitted to IEEE conference.
+\end{itemize}
+
+\section*{Selected Projects}
+\textbf{Distributed Vector Store} $|$ \textit{Rust, gRPC, Raft} \hfill \href{https://github.com}{Link}
+\begin{itemize}
+\item Built a distributed vector search engine implementing the Raft consensus algorithm for fault tolerance.
+\item Achieved 99th percentile query latency under 15ms across a 5-node cluster.
+\end{itemize}
+
+\textbf{Automated Document Verification Pipeline} $|$ \textit{Python, Multimodal AI, Poppler} \hfill \href{https://github.com}{Link}
+\begin{itemize}
+\item Developed closed-loop verification tool converting document markup to vector PDFs and rasterizing for visual QA.
+\end{itemize}
+
+\end{document}

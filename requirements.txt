@@ -1,0 +1,12 @@
+# System dependencies (Native CLI binaries)
+# Install via your package manager:
+#
+# Nix:    nix profile add nixpkgs#tectonic nixpkgs#poppler-utils nixpkgs#pandoc
+# Ubuntu: sudo apt install poppler-utils pandoc (and install tectonic from drop-sh.fullyjustified.net)
+# macOS:  brew install tectonic poppler pandoc
+# Arch:   sudo pacman -S tectonic poppler pandoc
+
+tectonic>=0.15.0
+poppler-utils>=21.0.0
+pandoc>=3.0.0
+nodejs>=18.0.0

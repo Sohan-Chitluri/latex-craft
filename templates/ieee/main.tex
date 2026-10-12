@@ -1,0 +1,69 @@
+\documentclass[conference]{IEEEtran}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\begin{document}
+
+\title{Your Paper Title Here}
+
+\author{
+\IEEEauthorblockN{First Author}
+\IEEEauthorblockA{\textit{Department of Electrical and Computer Engineering} \\
+\textit{University Name}\\
+City, Country \\
+email@example.com}
+\and
+\IEEEauthorblockN{Second Author}
+\IEEEauthorblockA{\textit{Department of Computer Science} \\
+\textit{Institution Name}\\
+City, Country \\
+email@example.com}
+}
+
+\maketitle
+
+\begin{abstract}
+A concise 150-200 word summary of the research motivation, key contributions, methodology, and empirical findings.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Keyword One, Keyword Two, Keyword Three
+\end{IEEEkeywords}
+
+\section{Introduction}
+Introduction setting up the context and research gap, building on foundational theories~\cite{sample}.
+
+\section{System Architecture}
+Technical formulation and architecture.
+\begin{equation}
+y = f(Wx + b)
+\end{equation}
+
+\section{Experimental Evaluation}
+\begin{table}[htbp]
+\centering
+\caption{Comparison of Experimental Results}
+\label{tab:results}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Method} & \textbf{Precision} & \textbf{Recall} & \textbf{F1 Score} \\
+\midrule
+Baseline & 0.82 & 0.79 & 0.80 \\
+Proposed & \textbf{0.94} & \textbf{0.91} & \textbf{0.92} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Conclusion}
+Summary of contributions and future research directions.
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}

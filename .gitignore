@@ -1,0 +1,8 @@
+node_modules/
+previews/
+*.log
+*.aux
+*.out
+*.pdf
+*.tar
+.DS_Store
