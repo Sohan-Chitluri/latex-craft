@@ -6,6 +6,7 @@ const { compileLatex, parseCompilationErrors, lintOverflowWarnings } = require('
 const { renderPdfPages, getPdfInfo } = require('./renderer.js');
 const { resolveCitation, fetchDoiBibtex, fetchArxivBibtex } = require('./bibtex.js');
 const { convertWordToLatex } = require('./converter.js');
+const { convertPdfToLatexWorkspace } = require('./pdf2latex.js');
 const { scaffoldTemplate, listTemplates } = require('./templates.js');
 const { runDoctor, detectOS } = require('./doctor.js');
 const { diffPdfs, compareImageDirs } = require('./diff.js');
@@ -21,6 +22,7 @@ module.exports = {
   fetchDoiBibtex,
   fetchArxivBibtex,
   convertWordToLatex,
+  convertPdfToLatexWorkspace,
   scaffoldTemplate,
   listTemplates,
   runDoctor,

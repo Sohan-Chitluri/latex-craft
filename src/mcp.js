@@ -9,6 +9,7 @@ const { compileLatex } = require('./compiler.js');
 const { renderPdfPages, getPdfInfo } = require('./renderer.js');
 const { resolveCitation } = require('./bibtex.js');
 const { convertWordToLatex } = require('./converter.js');
+const { convertPdfToLatexWorkspace } = require('./pdf2latex.js');
 const { scaffoldTemplate } = require('./templates.js');
 const { runDoctor } = require('./doctor.js');
 const { diffPdfs } = require('./diff.js');
@@ -111,6 +112,19 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             media_dir: { type: 'string', description: 'Directory to place extracted figures (default: ./figures).' },
           },
           required: ['docx_path'],
+        },
+      },
+      {
+        name: 'convert_pdf_to_latex',
+        description: 'Extracts layout-preserved text and high-res page images from a PDF into a LaTeX workspace for multimodal AI reconstruction.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            pdf_path: { type: 'string', description: 'Path to .pdf file.' },
+            outdir: { type: 'string', description: 'Optional target output directory.' },
+            dpi: { type: 'number', description: 'Resolution DPI for page images (default: 150).' },
+          },
+          required: ['pdf_path'],
         },
       },
       {
@@ -234,6 +248,21 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           {
             type: 'text',
             text: `✓ Word document converted successfully!\nLaTeX Source: ${res.texPath}\nExtracted Media: ${res.mediaDir}`,
+          },
+        ],
+      };
+    }
+
+    if (name === 'convert_pdf_to_latex') {
+      const res = convertPdfToLatexWorkspace(args.pdf_path, {
+        outdir: args.outdir,
+        dpi: args.dpi || 150,
+      });
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `✓ Extracted PDF to LaTeX Workspace!\nDirectory:   ${res.directory}\nLaTeX Draft: ${res.texPath}\nRaw Text:    ${res.txtPath}\nPage Images: ${res.pageImages.length} image(s) in ${res.directory}/pages`,
           },
         ],
       };

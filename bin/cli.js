@@ -8,6 +8,7 @@ const { compileLatex } = require('../src/compiler.js');
 const { renderPdfPages, getPdfInfo } = require('../src/renderer.js');
 const { resolveCitation } = require('../src/bibtex.js');
 const { convertWordToLatex } = require('../src/converter.js');
+const { convertPdfToLatexWorkspace } = require('../src/pdf2latex.js');
 const { scaffoldTemplate, listTemplates } = require('../src/templates.js');
 const { runDoctor } = require('../src/doctor.js');
 const { diffPdfs } = require('../src/diff.js');
@@ -38,6 +39,10 @@ Commands:
   convert <file.docx>            Convert Word document (.docx) to LaTeX and extract figures
     --output <file.tex>          Target LaTeX output path
     --media-dir <dir>            Figures extraction directory (default: ./figures)
+
+  convert-pdf <file.pdf>         Extract layout text & page images into a LaTeX workspace
+    --outdir <dir>               Target extraction directory (default: <basename>_extracted)
+    --dpi <number>               Resolution DPI for page images (default: 150)
 
   init <template>                Scaffold an official template (${listTemplates().join(', ')})
     --outdir <dir>               Target directory (default: ./)
@@ -172,6 +177,26 @@ async function main() {
       console.log(`✓ Converted successfully!`);
       console.log(`  LaTeX:  ${res.texPath}`);
       console.log(`  Media:  ${res.mediaDir}`);
+      break;
+    }
+
+    case 'convert-pdf': {
+      const pdf = subArgs[0];
+      if (!pdf) {
+        console.error('Error: Provide a .pdf file: latex-craft convert-pdf <file.pdf>');
+        process.exit(1);
+      }
+      console.log(`Extracting layout and pages from: ${pdf}...`);
+      const res = convertPdfToLatexWorkspace(pdf, {
+        outdir: getOpt('--outdir'),
+        dpi: parseInt(getOpt('--dpi', '150'), 10),
+      });
+      console.log(`✓ Extracted LaTeX workspace successfully!`);
+      console.log(`  Directory:    ${res.directory}`);
+      console.log(`  LaTeX Draft:  ${res.texPath}`);
+      console.log(`  Raw Text:     ${res.txtPath}`);
+      console.log(`  Page Images:  ${res.pageImages.length} image(s) in ${res.directory}/pages`);
+      console.log(`\nNext: Review page images and refine formulas/sections in ${res.texPath}.`);
       break;
     }
 
