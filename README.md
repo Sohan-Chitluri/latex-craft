@@ -60,7 +60,7 @@ You can use `latex-craft` either with zero install via `npx` or install it globa
 
 From npm:
 ```bash
-npx latex-craft <command>
+npx @peskybird/latex-craft <command>
 ```
 
 Or directly from GitHub:
@@ -75,7 +75,7 @@ npx github:Sohan-Chitluri/latex-craft <command>
 Install globally using `npm`:
 
 ```bash
-npm install -g latex-craft
+npm install -g @peskybird/latex-craft
 ```
 
 Or install globally directly from GitHub:

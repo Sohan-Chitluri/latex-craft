@@ -1,7 +1,10 @@
 {
-  "name": "latex-craft",
+  "name": "@peskybird/latex-craft",
   "version": "1.0.0",
   "description": "Lightweight LaTeX document compiler, visual QA reviewer, and Model Context Protocol (MCP) server for AI agents.",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "src/index.js",
   "bin": {
     "latex-craft": "./bin/cli.js"
