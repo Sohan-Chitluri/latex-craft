@@ -50,16 +50,57 @@
 
 ---
 
-## 🚀 Quick Start
+---
 
-You can run `latex-craft` directly via `npx` or install it globally:
+## 📦 Installation & Usage
+
+You can use `latex-craft` either with zero install via `npx` or install it globally via `npm`:
+
+### Option 1: Zero-Install (Run instantly via `npx`)
+
+From npm:
+```bash
+npx latex-craft <command>
+```
+
+Or directly from GitHub:
+```bash
+npx github:Sohan-Chitluri/latex-craft <command>
+```
+
+---
+
+### Option 2: Global Installation (Recommended for regular CLI use)
+
+Install globally using `npm`:
+
+```bash
+npm install -g latex-craft
+```
+
+Or install globally directly from GitHub:
+
+```bash
+npm install -g github:Sohan-Chitluri/latex-craft
+```
+
+Once installed globally, you can invoke `latex-craft` directly from any directory:
+
+```bash
+latex-craft doctor
+latex-craft init ieee
+```
+
+---
+
+## 🚀 Quick Start Commands
 
 ```bash
 # Verify your environment and native dependencies
-npx latex-craft doctor
+latex-craft doctor
 
 # Scaffold an IEEE conference paper
-npx latex-craft init ieee --target my-paper
+latex-craft init ieee --target my-paper
 cd my-paper
 
 # Compile the document and generate page PNG previews
