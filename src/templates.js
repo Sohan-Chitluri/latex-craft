@@ -76,8 +76,14 @@ function saveCustomTemplate(name, sourceDirOrFile, description = '') {
     throw new Error('Template name must contain only letters, numbers, hyphens, and underscores.');
   }
 
+  const normalized = name.toLowerCase();
+  const builtins = listBuiltinTemplates().map(b => b.toLowerCase());
+  if (builtins.includes(normalized)) {
+    throw new Error(`Cannot overwrite built-in template '${name}'. Please choose a custom name (e.g., 'custom-${normalized}').`);
+  }
+
   const customRoot = getCustomDir();
-  const destDir = path.join(customRoot, name.toLowerCase());
+  const destDir = path.join(customRoot, normalized);
   fs.mkdirSync(destDir, { recursive: true });
 
   const resolved = path.resolve(sourceDirOrFile || process.cwd());
